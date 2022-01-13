@@ -6,9 +6,9 @@
     </head>
     <body>
         @yield('header')
-        @forelse($errors->all() as $error)
+        @foreach($errors->all() as $error)
         <p class="error">{{ $error }}</p>
-        @endforelse
+        @endforeach
         @if(session()->has('success'))
         <p class="success">{{ session()->get('success') }}</p>
         @endif
