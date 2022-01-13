@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Auth::routes();
+Route::resource('blogs', 'BlogController');
+Route::resource('users', 'UserController')->only([
+    'show', 'edit', 'update']);
