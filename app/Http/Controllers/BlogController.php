@@ -27,7 +27,7 @@ class BlogController extends Controller
 
     public function store(BlogRequest $request){
         Blog::create($request->only([
-            'title', 'log']));
+            'user_id', 'title', 'log']));
         return redirect()->route('blogs.index');
     }
 
