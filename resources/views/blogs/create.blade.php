@@ -6,6 +6,7 @@
 
 <form method="post" action="{{ route('blogs.store') }}">
     @csrf
+    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
     <label>
         タイトル:
         <input type="text" name="title">

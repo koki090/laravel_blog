@@ -18,3 +18,4 @@ Auth::routes();
 Route::resource('blogs', 'BlogController');
 Route::resource('users', 'UserController')->only([
     'show', 'edit', 'update']);
+Route::post('users/follow/{user_id}', 'UserController@follow')->name('users.follow');
