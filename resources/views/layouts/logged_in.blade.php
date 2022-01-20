@@ -5,6 +5,9 @@
 <header>
     <ul>
         <li>
+            <a href="{{ route('blogs.index') }}">投稿一覧</a>
+        </li>
+        <li>
             <a href="{{ route('blogs.create') }}">新規投稿</a>
         </li>
         <li>
