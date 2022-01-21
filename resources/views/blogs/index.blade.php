@@ -2,6 +2,11 @@
 
 @section('content')
 
+<form method="post" action="{{ route('blogs.search') }}">
+    @csrf
+    <input type="text" name="search_word" placeholder="検索ワードを入力">
+    <input type="submit" value="検索">
+</form>
 <h1>{{ $title }}</h1>
 <ul>
     @forelse($recomend_users as $user)
@@ -38,7 +43,7 @@
     </li>
     @endif
     @empty
-    <li>記録はまだありません</li>
+    <li>投稿はまだありません</li>
     @endforelse
 </ul>
 
