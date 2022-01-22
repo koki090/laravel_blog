@@ -30,7 +30,7 @@ class BlogController extends Controller
         $recommend_users = \Auth::user()->recommend_users();
         
         //$blogs = Blog::all()->whereNotIn('user_id', $not_follow_users_id)->sortByDesc('created_at');
-        $blogs = Blog::MyBlog(\Auth::user()->not_follow_users()->pluck('id'));
+        $blogs = Blog::MyBlog(\Auth::user()->not_follow_users()->pluck('id'))->get();
         
         return view('blogs.index', [
             'title' => '投稿ブログ一覧',
@@ -78,7 +78,7 @@ class BlogController extends Controller
             $blogs = Blog::query();
             foreach($search_words as $word){
                 $h_search_word = '%' . addcslashes($word, '%_\\') . '%';
-                $blogs = $blogs->where('log', 'like', "%" . $h_search_word . "%");
+                $blogs = $blogs->where('log', 'like', $h_search_word);
             }
             $search_blogs = $blogs->get();
             return view('blogs.search', [
