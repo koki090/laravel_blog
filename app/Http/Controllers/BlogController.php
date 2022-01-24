@@ -74,13 +74,14 @@ class BlogController extends Controller
     public function search(Request $request){
         $search_word = $request->get('search_word');
         if(isset($search_word)){
-            $search_words = explode(" ", $search_word);
-            $blogs = Blog::query();
-            foreach($search_words as $word){
-                $h_search_word = '%' . addcslashes($word, '%_\\') . '%';
-                $blogs = $blogs->where('log', 'like', $h_search_word);
-            }
-            $search_blogs = $blogs->get();
+            // $search_words = explode(" ", $search_word);
+            // $blogs = Blog::query();
+            // foreach($search_words as $word){
+            //     $h_search_word = '%' . addcslashes($word, '%_\\') . '%';
+            //     $blogs = $blogs->where('log', 'like', $h_search_word);
+            // }
+            // $search_blogs = $blogs->get();
+            $search_blogs = Blog::SearchBlogs($search_word)->get();
             return view('blogs.search', [
                 'title' => '検索結果',
                 'search_word' => $search_word,

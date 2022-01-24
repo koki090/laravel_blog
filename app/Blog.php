@@ -17,4 +17,12 @@ class Blog extends Model
         $query->whereNotIn('user_id',$not_follow_users_id)->orderBy('created_at','desc');
     }
     
+    public function scopeSearchBlogs($query, $search_word){
+        $search_words = explode(" ", $search_word);
+        foreach($search_words as $word){
+            $h_search_word = '%' . addcslashes($word, '%_\\') . '%';
+            $blogs = $query->where('log', 'like', $h_search_word);
+        }
+        return $blogs;
+    }
 }
