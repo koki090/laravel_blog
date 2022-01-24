@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/', 'BlogController@index')->name('blogs.index');
 Auth::routes();
 Route::resource('blogs', 'BlogController');
 Route::resource('users', 'UserController')->only([
