@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class BlogRequest extends FormRequest
+class DeleteImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +25,7 @@ class BlogRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'max:100'],
-            'log' => ['required', 'max:2000'],
-            'files.*' => [
-                'required',
-                'file',
-                'image',
-                'mimes:jpeg,jpg,png',
-                'dimensions:max_width=1000,max_height=1000']
+            "image_ids.*" => ["exists:blog_images,id"]
         ];
     }
 }

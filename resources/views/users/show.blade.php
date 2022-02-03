@@ -3,7 +3,11 @@
 @section('content')
 
 <h1>{{ $title }}</h1>
-
+@if($user->image !== '')
+<img src="{{ asset('storage/' . $user->image) }}">
+@else
+<img src="{{ asset('images/no_image.png') }}">
+@endif
 <dl>
     <dt>名前</dt>
     <dd>{{ $user->name }}</dd>

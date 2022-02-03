@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\BlogRequest;
+use App\Http\Requests\DeleteImageRequest;
+use App\Http\Requests\PushImageRequest;
 use App\User;
 use App\Blog;
+use App\BlogImage;
 
 class BlogController extends Controller
 {
@@ -18,7 +21,7 @@ class BlogController extends Controller
         $blogs = Blog::MyBlog(\Auth::user()->not_follow_users()->pluck('id'))->get();
         return view('blogs.index', [
             'title' => '投稿ブログ一覧',
-            'recomend_users' => $recommend_users,
+            'recommend_users' => $recommend_users,
             'blogs' => $blogs]);
     }
 
@@ -28,8 +31,13 @@ class BlogController extends Controller
     }
 
     public function store(BlogRequest $request){
-        Blog::create($request->only([
+        $blog = Blog::create($request->only([
             'user_id', 'title', 'log']));
+        foreach($request->file('files') as $image){
+            $path = $image->store('blog_images', 'public');
+            $blog->blogImages()->create([
+                'image' => $path]);
+        }
         return redirect()->route('blogs.index');
     }
 
@@ -51,7 +59,28 @@ class BlogController extends Controller
     }
 
     public function destroy($id){
+        $images = Blog::find($id)->blogImages()->get();
+        foreach($images as $image){
+            \Storage::disk('public')->delete($image->image);
+        }
         Blog::find($id)->delete();
+        return redirect()->route('blogs.index');
+    }
+    
+    public function editImage($blog_id){
+        $blogImages = Blog::find($blog_id)->blogImages()->get();
+        return view('blogs.edit_image', [
+            'title' => '画像を選んで削除',
+            'blog_id' => $blog_id,
+            'blogImages' => $blogImages]);
+    }
+    
+    public function selectDeleteImage(DeleteImageRequest $request, $blog_id){
+        foreach($request->get('image_ids') as $id){
+            $image = BlogImage::find($id)->image;
+            \Storage::disk('public')->delete($image);
+            BlogImage::find($id)->delete();
+        }
         return redirect()->route('blogs.index');
     }
     
@@ -66,5 +95,23 @@ class BlogController extends Controller
         }else{
             return redirect()->route('blogs.index');
         }
+    }
+    
+    public function pushImage($blog_id){
+        $blogImages = Blog::find($blog_id)->blogImages()->get();
+        return view('blogs.push_image', [
+            'title' => '画像を追加',
+            'blog_id' => $blog_id,
+            'blogImages' => $blogImages]);
+    }
+    
+    public function selectPushImage(PushImageRequest $request, $blog_id){
+        foreach($request->file('files') as $image){
+            $path = $image->store('blog_images', 'public');
+            BlogImage::create([
+                'blog_id' => $blog_id,
+                'image' => $path]);
+        }
+        return redirect()->route('blogs.index');
     }
 }

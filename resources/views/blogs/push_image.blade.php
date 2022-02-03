@@ -5,17 +5,9 @@
 <h1>{{ $title }}</h1>
 
 
-<form method="post" action="{{ route('blogs.store') }}" enctype="multipart/form-data">
+<form method="post" action="{{ route('blogs.select_push_image', $blog_id) }}" enctype="multipart/form-data">
     @csrf
-    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-    <label>
-        タイトル:
-        <input type="text" name="title">
-    </label>
-    <label>
-        内容:
-        <input type="text" name="log">
-    </label>
+    @method('patch')
     <label>
         画像（複数選択可）:
         <input id="input_file" type="file" name="files[]" multiple>

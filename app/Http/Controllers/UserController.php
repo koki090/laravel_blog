@@ -13,6 +13,7 @@ class UserController extends Controller
 {
     public function __construct(){
         $this->middleware('auth');
+        
     }
     
     public function show($id){
@@ -37,8 +38,20 @@ class UserController extends Controller
     }
 
     public function update(UserRequest $request, $id){
-        User::find($id)->update($request->only([
-            'name', 'email']));
+        $user = User::find($id);
+        $path = '';
+        $image = $request->file('image');
+        if(isset($image)){
+            $path = $image->store('user_images', 'public');
+        };
+        if($user->image !== ''){
+            \Storage::disk('public')->delete(\Strage::url($user->image));
+        }
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'image' => $path,
+            ]);
         return redirect()->route('users.show', $id);
     }
     
