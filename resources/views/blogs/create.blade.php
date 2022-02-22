@@ -34,14 +34,14 @@
             let file = files[i];
             if(!file.type.match('image')){
                 continue;
-                };
+            };
             let fileReader = new FileReader;
             fileReader.addEventListener("load", (event) => {
                 let imageFile = event.target;
                 let div = document.createElement("div");
                 div.innerHTML = "<img src='" + imageFile.result + "' >";
                 output.insertBefore(div, null);
-                });
+            });
             fileReader.readAsDataURL(file);
             };
         });

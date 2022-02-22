@@ -45,7 +45,7 @@ class UserController extends Controller
             $path = $image->store('user_images', 'public');
         };
         if($user->image !== ''){
-            \Storage::disk('public')->delete(\Strage::url($user->image));
+            \Storage::disk('public')->delete(\Storage::url($user->image));
         }
         $user->update([
             'name' => $request->name,
