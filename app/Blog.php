@@ -13,6 +13,10 @@ class Blog extends Model
         return $this->belongsTo('App\User');
     }
     
+    public function blogImages(){
+        return $this->hasMany('App\BlogImage');
+    }
+    
     public function scopeMyBlog($query,$not_follow_users_id){
         $query->whereNotIn('user_id',$not_follow_users_id)->orderBy('created_at','desc');
     }

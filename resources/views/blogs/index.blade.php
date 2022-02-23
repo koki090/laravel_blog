@@ -9,7 +9,7 @@
 </form>
 <h1>{{ $title }}</h1>
 <ul>
-    @forelse($recomend_users as $user)
+    @forelse($recommend_users as $user)
     @if($user->id !== Auth::user()->id)
     <li>
         <a href="{{ route('users.show', $user->id) }}">{{ $user->name }}</a>
@@ -32,8 +32,23 @@
     <li>
         {{ $blog->log }}
     </li>
+    <li>
+        <ul>
+            @forelse($blog->blogImages as $image)
+            <li>
+                <img src="{{ asset('storage/' . $image->image) }}">
+            </li>
+            @empty
+            <li>
+                <img src="{{ asset('images/no_image.png') }}">
+            </li>
+            @endforelse
+        </ul>
+    </li>
     @if($blog->user_id === Auth::user()->id)
     <li>
+        [<a href="{{ route('blogs.edit_image', $blog->id) }}">画像を削除</a>]
+        [<a href="{{ route('blogs.push_image', $blog->id) }}">画像を追加</a>]
         [<a href="{{ route('blogs.edit', $blog->id) }}">編集</a>]
         <form method="post" action="{{ route('blogs.destroy', $blog->id) }}" class="delete_form">
             @csrf

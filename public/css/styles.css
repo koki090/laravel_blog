@@ -1,3 +1,6 @@
 .delete_form {
     display: inline;
 }
+.select {
+    border: solid blue 3px;
+}
